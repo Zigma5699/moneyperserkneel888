@@ -1,39 +1,287 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>My Web + GAS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบล็อกอิน</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        }
+        
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-header h1 {
+            color: #4a4a4a;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .login-header p {
+            color: #767676;
+        }
+        .form-floating {
+            margin-bottom: 20px;
+        }
+        .form-control:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 0.25rem rgba(118, 75, 162, 0.25);
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 0;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+        .form-checkbox {
+            margin-bottom: 20px;
+        }
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #767676;
+        }
+        .login-footer a {
+            color: #764ba2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        .show-password {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #764ba2;
+        }
+        .password-container {
+            position: relative;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .spinner-border {
+            color: #764ba2;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #198754;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #dc3545;
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(118, 75, 162, 0.1)" d="M0,192L48,176C96,160,192,128,288,122.7C384,117,480,139,576,149.3C672,160,768,160,864,176C960,192,1056,224,1152,229.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
 </head>
 <body>
+    <div class="video-container">
+        <video autoplay loop muted playsinline>
+          <source src="Invincible_war.mp4" type="video/mp4">
+        </video>
+    </div>
 
-  <h1>ติดต่อกับ Google Apps Script</h1>
-  <button onclick="sendData()">ส่งข้อมูล</button>
+    <div class="container"data-aos="zoom-in" data-aos-delay="100">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div id="login-form" class="login-container">
+                    <div class="login-header">
+                        <h1>ยินดีต้อนรับ</h1>
+                        <p>กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ</p>
+                    </div>
+                    <form id="authForm">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="username" placeholder="ชื่อผู้ใช้" required>
+                            <label for="username"><i class="fas fa-user me-2"></i>ชื่อผู้ใช้</label>
+                        </div>
+                        <div class="form-floating mb-3 password-container">
+                            <input type="password" class="form-control" id="password" placeholder="รหัสผ่าน" required>
+                            <label for="password"><i class="fas fa-lock me-2"></i>รหัสผ่าน</label>
+                            <span class="show-password" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="form-checkbox d-flex justify-content-between align-items-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">
+                                    จดจำฉัน
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-login w-100">เข้าสู่ระบบ</button>
+                    </form>
+                    <div class="loading">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">กำลังโหลด...</span>
+                        </div>
+                        <p class="mt-2">กำลังเข้าสู่ระบบ กรุณารอสักครู่...</p>
+                    </div>
+                    <div class="success-message">
+                        <i class="fas fa-check-circle fa-3x mb-3"></i>
+                        <h4>เข้าสู่ระบบสำเร็จ!</h4>
+                        <p>กำลังนำคุณไปยังหน้าถัดไป...</p>
+                    </div>
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle fa-3x mb-3"></i>
+                        <h4>เข้าสู่ระบบไม่สำเร็จ</h4>
+                        <p>ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง</p>
+                    </div>
+                    <div class="login-footer">
+                        <p>Noicely.jpg</p>
+                    </div>
+                    <div class="wave"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            easing: 'ease',
+            once: true,
+        });
+        // ป้องกันการกด F12
+        document.addEventListener('keydown', function(event) {
+            if (event.keyCode === 123) { // F12 key
+                event.preventDefault();
+                return false;
+            }
+        });
 
-  // script.js
-function sendData() {
-  fetch("https://script.google.com/macros/s/AKfycbz_WOd860CnsFOLCaG7lHqwNbb3sZus1WyrprUfji7co1bWSsi4FeZ4Jj9QFTbzNvio/exec", {
-    method: "POST",
-    body: JSON.stringify({ message: "สวัสดีจากเว็บ!" }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-  .then(res => res.json())
-  .then(data => alert("ตอบกลับ: " + data.reply))
-  .catch(err => console.error(err));
-}
+        // ป้องกันการกด Ctrl+U
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.keyCode === 85) { // Ctrl+U
+                event.preventDefault();
+                return false;
+            }
+        });
 
-function doOptions(e) {
-  return ContentService.createTextOutput("")
-    .setMimeType(ContentService.MimeType.TEXT)
-    .setHeader("Access-Control-Allow-Origin", "*")
-    .setHeader("Access-Control-Allow-Headers", "Content-Type")
-    .setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-}
+        // ป้องกันการคลิกขวา
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+            return false;
+        });
 
-</script>
+        // เข้ารหัสรหัสผ่านก่อนส่ง
+        function encryptPassword(password) {
+            // ในสถานการณ์จริง คุณควรใช้การเข้ารหัสที่ปลอดภัยกว่านี้
+            // นี่เป็นเพียงตัวอย่างอย่างง่าย
+            return btoa(password);
+        }
+
+        // สลับการแสดงรหัสผ่าน
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // จัดการการส่งฟอร์ม
+        document.getElementById('authForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const encryptedPassword = encryptPassword(password);
+            
+            // ซ่อนฟอร์มและแสดงสถานะกำลังโหลด
+            document.getElementById('authForm').style.display = 'none';
+            document.querySelector('.loading').style.display = 'block';
+            
+            // จำลองการส่งข้อมูลไปยังเซิร์ฟเวอร์
+            setTimeout(function() {
+                document.querySelector('.loading').style.display = 'none';
+                
+                // สำหรับการสาธิต เรากำหนดว่าชื่อผู้ใช้ 'admin' และรหัสผ่าน 'password' เป็นการเข้าสู่ระบบที่ถูกต้อง
+                if (username === 'Noicely' && password === '070949') {
+                    document.querySelector('.success-message').style.display = 'block';
+                    
+                    // รอ 2 วินาทีแล้วเปลี่ยนไปยังหน้าถัดไป
+                    setTimeout(function() {
+                        // สร้างหน้าหลังจากล็อกอิน
+                        window.location.assign('money888EZ.html');
+                    }, 2000);
+                } else {
+                    document.querySelector('.error-message').style.display = 'block';
+                    
+                    // แสดงข้อความผิดพลาดเป็นเวลา 2 วินาที แล้วกลับไปที่ฟอร์ม
+                    setTimeout(function() {
+                        document.querySelector('.error-message').style.display = 'none';
+                        document.getElementById('authForm').style.display = 'block';
+                    }, 2000);
+                }
+            }, 1500);
+        });
+    </script>
 </body>
 </html>
