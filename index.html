@@ -1,0 +1,30 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Web + GAS</title>
+</head>
+<body>
+
+  <h1>ติดต่อกับ Google Apps Script</h1>
+  <button onclick="sendData()">ส่งข้อมูล</button>
+
+  <script>
+
+  // script.js
+function sendData() {
+  fetch("https://script.google.com/macros/s/AKfycbzGxXmOx51fIG2UZ-IVphiwf9-77BbXFE8s1Eam_nwFLf4_jnOa3g1sRt_uLXMvtzpj/exec", {
+    method: "POST",
+    body: JSON.stringify({ message: "สวัสดีจากเว็บ!" }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => res.json())
+  .then(data => alert("ตอบกลับ: " + data.reply))
+  .catch(err => console.error(err));
+}
+</script>
+</body>
+</html>
